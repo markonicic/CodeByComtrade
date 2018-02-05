@@ -34,7 +34,7 @@ for(c=0; c<brickColumns; ++c){
   }
 }
  
-var drawBall = function(){ 
+var drawBall = function() { 
   contex.beginPath();
   contex.arc(ballX, ballY, ballRadius, 0, Math.PI*2);
   contex.fillStyle = "#fff";
@@ -42,7 +42,7 @@ var drawBall = function(){
   contex.closePath();
 }
  
-var drawStick = function(){ 
+var drawStick = function() { 
   contex.beginPath();
   contex.rect(stickX, stickY, stickWidth, stickHeight);
   contex.fillStyle = "#0000FF";
@@ -50,10 +50,10 @@ var drawStick = function(){
   contex.closePath(); 
 }
  
-var drawBricks = function(){ 
-  for(c=0; c<brickColumns; ++c){
-    for(r=0; r<brickRows; ++r){
-       if(bricks[c][r].status == 1){ 
+var drawBricks = function() { 
+  for(c=0; c<brickColumns; ++c) {
+    for(r=0; r<brickRows; ++r) {
+       if(bricks[c][r].status == 1) { 
          var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft,
              brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
          bricks[c][r].x = brickX;
@@ -71,17 +71,17 @@ var drawBricks = function(){
   } 
 }
 
-var collisionDetection = function(){ 
-  for(c=0; c<brickColumns; ++c){ 
-    for(r=0; r<brickRows; ++r){ 
+var collisionDetection = function() { 
+  for(c=0; c<brickColumns; ++c) { 
+    for(r=0; r<brickRows; ++r) { 
        var b = bricks[c][r]; 
-       if(b.status == 1){ 
-          if((ballX > b.x) && (ballX < (b.x + brickWidth)) && (ballY > b.y) && (ballY < b.y + brickHeight)){
+       if(b.status == 1) { 
+          if((ballX > b.x) && (ballX < (b.x + brickWidth)) && (ballY > b.y) && (ballY < b.y + brickHeight)) {
              speedY = -speedY;
              b.status = 0;
              score++;
              count--;
-                  if(count == 0){
+                  if(count == 0) {
                      alert("You WON!!! Good job champ!");
                      document.location.reload();
                   }
@@ -143,7 +143,7 @@ var draw = function() {
        stickX -= 7; 
 }
  
-var mouseMoveHandler = function(e){ 
+var mouseMoveHandler = function(e) { 
   var relativeX = e.clientX - canvas.offsetLeft; 
   if((relativeX > 0) && (relativeX < canvas.width)) { 
      if((relativeX - stickWidth/2 >= 0) && (relativeX-stickWidth/2 <= canvas.width-stickWidth))
