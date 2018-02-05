@@ -1,0 +1,14 @@
+body{
+    background-color:black;
+    }
+     
+    #interface
+    {
+        display: block;
+        margin: 0 auto;
+        margin-top:10px;
+        background-color:#2A2927;
+        border-radius: 5px;
+        border:15px solid silver;
+        padding-top:25px;
+    }
