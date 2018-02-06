@@ -114,8 +114,8 @@ var draw = function() {
     if((ballY + speedY) < ballRadius)
       speedY = -speedY;
     else if((ballY + speedY + 15) > (interface.height - ballRadius)) { 
-       if((ballX >= stickX) && (ballX <= stickX + stickWidth)){ 
-          speedY = -speedY; 
+       if((ballX >= stickX) && (ballX <= stickX + stickWidth)) { 
+          speedY = -speedY;
        }
        else {
           lives--;
