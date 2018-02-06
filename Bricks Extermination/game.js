@@ -1,16 +1,16 @@
 var canvas = document.getElementById("interface");
-var context = canvas.getContext("2d");
+var context = interface.getContext("2d");
 
-var ballX = canvas.width / 2;
-    ballY = canvas.height - 80,
+var ballX = interface.width / 2;
+    ballY = interface.height - 80,
     ballRadius = 7, 
     speedX = 3.8,
     speedY = -3.8,
 
     stickHeight = 15,
     stickWidth = 120,
-    stickX = (canvas.width - stickWidth) / 2,
-    stickY = canvas.height - stickHeight - 3,
+    stickX = (interface.width - stickWidth) / 2,
+    stickY = interface.height - stickHeight - 5,
 
     brickRows = 7,
     brickColumns = 9, 
@@ -100,11 +100,11 @@ var drawScore = function() {
 var drawLives = function() {
     context.font = "20px Bender";
     context.fillStyle = "#fff";
-    context.fillText("Brick Extermination                                 lives: "+lives, canvas.width-470, 20);
+    context.fillText("Brick Extermination                                 lives: "+lives, interface.width-470, 20);
 }
  
 var draw = function() { 
-    context.clearRect(0 , 0, canvas.width, canvas.height);
+    context.clearRect(0 , 0, interface.width, interface.height);
     drawBricks();
     drawBall();
     drawStick();
@@ -113,7 +113,7 @@ var draw = function() {
     collisionDetection();
     if((ballY + speedY) < ballRadius)
       speedY = -speedY;
-    else if((ballY + speedY)+10 > (canvas.height - ballRadius)) { 
+    else if((ballY + speedY + 15) > (interface.height - ballRadius)) { 
        if((ballX >= stickX) && (ballX <= stickX + stickWidth)){ 
           speedY = -speedY; 
        }
@@ -124,25 +124,25 @@ var draw = function() {
             document.location.reload(); 
           }
           else {
-            ballX = canvas.width / 2;
-            ballY = canvas.height - 20;
+            ballX = interface.width / 2;
+            ballY = interface.height - 20;
             remain = count;
-            stickX = (canvas.width - stickWidth) / 2;
+            stickX = (interface.width - stickWidth) / 2;
            }
       } 
     }
     else
       ballY += speedY; 
-    if((ballX + speedX < ballRadius) || (ballX + speedX > canvas.width - ballRadius))
+    if((ballX + speedX < ballRadius) || (ballX + speedX > interface.width - ballRadius))
        speedX = -speedX;
     else
        ballX += speedX;
 }
  
 var mouseMoveHandler = function(e) { 
-  var relativeX = e.clientX - canvas.offsetLeft; 
-  if((relativeX > 0) && (relativeX < canvas.width)) { 
-     if((relativeX - stickWidth/2 >= 0) && (relativeX-stickWidth/2 <= canvas.width-stickWidth))
+  var relativeX = e.clientX - interface.offsetLeft; 
+  if((relativeX > 0) && (relativeX < interface.width)) { 
+     if((relativeX - stickWidth/2 >= 0) && (relativeX-stickWidth/2 <= interface.width-stickWidth))
         stickX = relativeX - stickWidth/2; 
   } 
 }
