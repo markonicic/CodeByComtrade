@@ -3,14 +3,14 @@ var contex = canvas.getContext("2d");
 
 var ballX = canvas.width / 2;
     ballY = canvas.height - 80,
-    ballRadius = 8, 
-    speedX = 4,
-    speedY = -4,
+    ballRadius = 7, 
+    speedX = 3.8,
+    speedY = -3.8,
 
     stickHeight = 15,
     stickWidth = 120,
     stickX = (canvas.width - stickWidth) / 2,
-    stickY = canvas.height - stickHeight - 2,
+    stickY = canvas.height - stickHeight - 3,
 
     brickRows = 7,
     brickColumns = 9, 
@@ -72,17 +72,17 @@ var drawBricks = function() {
 }
 
 var collisionDetection = function() { 
-  for(c=0; c<brickColumns; ++c) { 
-    for(r=0; r<brickRows; ++r) { 
+  for(c=0; c<brickColumns; ++c){ 
+    for(r=0; r<brickRows; ++r){ 
        var b = bricks[c][r]; 
-       if(b.status == 1) { 
-          if((ballX > b.x) && (ballX < (b.x + brickWidth)) && (ballY > b.y) && (ballY < b.y + brickHeight)) {
+       if(b.status == 1){ 
+          if((ballX > b.x) && (ballX < (b.x + brickWidth)) && (ballY > b.y) && (ballY < b.y + brickHeight)){
              speedY = -speedY;
              b.status = 0;
              score++;
              count--;
-                  if(count == 0) {
-                     alert("You WON!!! Good job champ!");
+                  if(count == 0){
+                     alert("GREAT JOB CHAMPION, YOU WON !!!");
                      document.location.reload();
                   }
           } 
@@ -92,15 +92,15 @@ var collisionDetection = function() {
 }
  
 var drawScore = function() { 
-   contex.font = "18px Arial";
+   contex.font = "20px Bender";
    contex.fillStyle = "#fff";
-   contex.fillText("score: "+score,40,20);
+   contex.fillText("score: "+score,80,20);
 }
  
 var drawLives = function() {
-    contex.font = "18px Arial";
+    contex.font = "20px Bender";
     contex.fillStyle = "#fff";
-    contex.fillText("Bricks Extermination             lives: "+lives, canvas.width-310, 20);
+    contex.fillText("Brick Extermination                                 lives: "+lives, canvas.width-470, 20);
 }
  
 var draw = function() { 
@@ -113,14 +113,14 @@ var draw = function() {
     collisionDetection();
     if((ballY + speedY) < ballRadius)
       speedY = -speedY;
-    else if((ballY + speedY) > (canvas.height - ballRadius)) { 
+    else if((ballY + speedY)+10 > (canvas.height - ballRadius)) { 
        if((ballX >= stickX) && (ballX <= stickX + stickWidth)){ 
           speedY = -speedY; 
        }
        else {
           lives--;
           if(!lives) {
-            alert("Sorry, you've lost...\nTry again! :-)");
+            alert("Sorry, no more lifes left...\nTry again!");
             document.location.reload(); 
           }
           else {
@@ -136,11 +136,7 @@ var draw = function() {
     if((ballX + speedX < ballRadius) || (ballX + speedX > canvas.width - ballRadius))
        speedX = -speedX;
     else
-       ballX += speedX; 
-    if(rightPressed && (stickX < canvas.width - stickWidth))
-       stickX += 7;
-    else if(leftPressed && (stickX > 0))
-       stickX -= 7; 
+       ballX += speedX;
 }
  
 var mouseMoveHandler = function(e) { 
