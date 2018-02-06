@@ -71,7 +71,7 @@ var drawBricks = function() {
   } 
 }
 
-var collisionDetection = function() { 
+var impactDetector = function() { 
   for(c=0; c<brickColumns; ++c){ 
     for(r=0; r<brickRows; ++r){ 
        var b = bricks[c][r]; 
@@ -92,15 +92,15 @@ var collisionDetection = function() {
 }
  
 var drawScore = function() { 
-   context.font = "20px Bender";
+   context.font = "20px Lucida Console";
    context.fillStyle = "#fff";
    context.fillText("score: "+score,80,20);
 }
  
 var drawLives = function() {
-    context.font = "20px Bender";
+    context.font = "20px Lucida Console";
     context.fillStyle = "#fff";
-    context.fillText("Brick Extermination                                 lives: "+lives, interface.width-470, 20);
+    context.fillText("Bricks Extermination        lives: "+lives, interface.width-510, 20);
 }
  
 var draw = function() { 
@@ -110,7 +110,7 @@ var draw = function() {
     drawStick();
     drawScore();
     drawLives(); 
-    collisionDetection();
+    impactDetector();
     if((ballY + speedY) < ballRadius)
       speedY = -speedY;
     else if((ballY + speedY + 15) > (interface.height - ballRadius)) { 
