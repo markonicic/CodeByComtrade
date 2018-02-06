@@ -1,5 +1,5 @@
 var canvas = document.getElementById("interface");
-var contex = canvas.getContext("2d");
+var context = canvas.getContext("2d");
 
 var ballX = canvas.width / 2;
     ballY = canvas.height - 80,
@@ -35,19 +35,19 @@ for(c=0; c<brickColumns; ++c){
 }
  
 var drawBall = function() { 
-  contex.beginPath();
-  contex.arc(ballX, ballY, ballRadius, 0, Math.PI*2);
-  contex.fillStyle = "#fff";
-  contex.fill();
-  contex.closePath();
+  context.beginPath();
+  context.arc(ballX, ballY, ballRadius, 0, Math.PI*2);
+  context.fillStyle = "#fff";
+  context.fill();
+  context.closePath();
 }
  
 var drawStick = function() { 
-  contex.beginPath();
-  contex.rect(stickX, stickY, stickWidth, stickHeight);
-  contex.fillStyle = "#0000FF";
-  contex.fill();
-  contex.closePath(); 
+  context.beginPath();
+  context.rect(stickX, stickY, stickWidth, stickHeight);
+  context.fillStyle = "#0000FF";
+  context.fill();
+  context.closePath(); 
 }
  
 var drawBricks = function() { 
@@ -58,14 +58,14 @@ var drawBricks = function() {
              brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
          bricks[c][r].x = brickX;
          bricks[c][r].y = brickY;
-         contex.beginPath();
-         contex.rect(brickX, brickY, brickWidth, brickHeight);
+         context.beginPath();
+         context.rect(brickX, brickY, brickWidth, brickHeight);
          if(c%2 != 0)
-           contex.fillStyle = "#ffbf00";
+           context.fillStyle = "#ffbf00";
          else
-           contex.fillStyle = "#2aa774";
-         contex.fill();
-         contex.closePath(); 
+           context.fillStyle = "#2aa774";
+         context.fill();
+         context.closePath(); 
       }
     }
   } 
@@ -92,19 +92,19 @@ var collisionDetection = function() {
 }
  
 var drawScore = function() { 
-   contex.font = "20px Bender";
-   contex.fillStyle = "#fff";
-   contex.fillText("score: "+score,80,20);
+   context.font = "20px Bender";
+   context.fillStyle = "#fff";
+   context.fillText("score: "+score,80,20);
 }
  
 var drawLives = function() {
-    contex.font = "20px Bender";
-    contex.fillStyle = "#fff";
-    contex.fillText("Brick Extermination                                 lives: "+lives, canvas.width-470, 20);
+    context.font = "20px Bender";
+    context.fillStyle = "#fff";
+    context.fillText("Brick Extermination                                 lives: "+lives, canvas.width-470, 20);
 }
  
 var draw = function() { 
-    contex.clearRect(0 , 0, canvas.width, canvas.height);
+    context.clearRect(0 , 0, canvas.width, canvas.height);
     drawBricks();
     drawBall();
     drawStick();
