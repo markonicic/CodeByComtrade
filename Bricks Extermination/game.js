@@ -2,31 +2,30 @@ var canvas = document.getElementById("interface");
 var context = interface.getContext("2d");
 
 var ballX = interface.width / 2;
-ballY = interface.height - 80,
-  ballRadius = 7,
-  speedX = 3.8,
-  speedY = -3.8,
-  speedUp = 0.05,
+    ballY = interface.height - 80,
+    ballRadius = 7,
+    speedX = 3.8,
+    speedY = -3.8,
+    speedUp = 0.05,
 
-  stickHeight = 15,
-  stickWidth = 120,
-  stickX = (interface.width - stickWidth) / 2,
-  stickY = interface.height - stickHeight - 5,
+    stickHeight = 15,
+    stickWidth = 120,
+    stickX = (interface.width - stickWidth) / 2,
+    stickY = interface.height - stickHeight - 5,
 
-  brickRows = 7,
-  brickColumns = 9,
-  brickWidth = 70,
-  brickHeight = 20,
-  brickPadding = 7,
-  brickOffsetTop = 30,
-  brickOffsetLeft = 60,
+    brickRows = 7,
+    brickColumns = 9,
+    brickWidth = 70,
+    brickHeight = 20,
+    brickPadding = 7,
+    brickOffsetTop = 30,
+    brickOffsetLeft = 60,
 
-  count = brickRows * brickColumns,
-  lastCount = count,
-  remain = count,
+    count = brickRows * brickColumns,
+    remain = count,
 
-  score = 0,
-  lives = 3;
+    score = 0,
+    lives = 3;
 
   
 var createBricks = function(brickColumns, brickRows) {
@@ -62,7 +61,7 @@ var drawBricks = function () {
     for (r = 0; r < brickRows; ++r) {
       if (bricks[c][r].status == 1) {
         var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft,
-          brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+            brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
         bricks[c][r].x = brickX;
         bricks[c][r].y = brickY;
         context.beginPath();
@@ -79,10 +78,10 @@ var drawBricks = function () {
 }
 
 var level = function (count) {
-  if (lastCount == count) {
+  if (remain == count) {
     return;
   }
-  lastCount = count;
+  remain = count;
   speedX = speedX >= 0 ? speedX + speedUp : speedX - speedUp;
   speedY = speedY >= 0 ? speedY + speedUp : speedY - speedUp;
 }
