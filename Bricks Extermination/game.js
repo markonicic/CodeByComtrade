@@ -4,9 +4,9 @@ var context = interface.getContext("2d");
 var ballX = interface.width / 2;
     ballY = interface.height - 80,
     ballRadius = 7,
-    speedX = 3.8,
-    speedY = -3.8,
-    speedUp = 0.05,
+    speedX = 5,
+    speedY = -5,
+    speedUp = 0.06,
 
     stickHeight = 15,
     stickWidth = 120,
@@ -25,7 +25,17 @@ var ballX = interface.width / 2;
     remain = count,
 
     score = 0,
-    lives = 3;
+    lives = 3,
+    captionText = "20px Lucida Console",
+    captionColor = "#fff",
+    captionScore = "score: ",
+    captionMain = "Bricks Extermination",
+    captionLives = "lives: ",
+    
+    ballColor = "#fff",
+    stickColor = "#0000FF",
+    brickColorEven = "#ffbf00",
+    brickColorOdd = "#2aa774";
 
   
 var createBricks = function(brickColumns, brickRows) {
@@ -43,7 +53,7 @@ var bricks = createBricks(brickColumns, brickRows);
 var drawBall = function () {
   context.beginPath();
   context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-  context.fillStyle = "#fff";
+  context.fillStyle = ballColor;
   context.fill();
   context.closePath();
 }
@@ -51,7 +61,7 @@ var drawBall = function () {
 var drawStick = function () {
   context.beginPath();
   context.rect(stickX, stickY, stickWidth, stickHeight);
-  context.fillStyle = "#0000FF";
+  context.fillStyle = stickColor;
   context.fill();
   context.closePath();
 }
@@ -67,9 +77,9 @@ var drawBricks = function () {
         context.beginPath();
         context.rect(brickX, brickY, brickWidth, brickHeight);
         if (c % 2 != 0)
-          context.fillStyle = "#ffbf00";
+          context.fillStyle = brickColorEven;
         else
-          context.fillStyle = "#2aa774";
+          context.fillStyle = brickColorOdd;
         context.fill();
         context.closePath();
       }
@@ -84,6 +94,7 @@ var level = function (count) {
   remain = count;
   speedX = speedX >= 0 ? speedX + speedUp : speedX - speedUp;
   speedY = speedY >= 0 ? speedY + speedUp : speedY - speedUp;
+  stickWidth -= 0.4;
 }
 
 var impactDetector = function () {
@@ -109,15 +120,16 @@ var impactDetector = function () {
 }
 
 var drawScore = function () {
-  context.font = "20px Lucida Console";
-  context.fillStyle = "#fff";
-  context.fillText("score: " + score, 80, 20);
+  context.font = captionText;
+  context.fillStyle = captionColor;
+  context.fillText(captionScore + score, 80, 20);
 }
 
 var drawLives = function () {
-  context.font = "20px Lucida Console";
-  context.fillStyle = "#fff";
-  context.fillText("Bricks Extermination        lives: " + lives, interface.width - 510, 20);
+  context.font = captionText;
+  context.fillStyle = captionColor;
+  context.fillText(captionMain, 300, 20);
+  context.fillText(captionLives + lives, 620, 20);
 }
 
 var ballMovement = function () {
@@ -157,12 +169,12 @@ var ballMovement = function () {
 var draw = function () {
   context.clearRect(0, 0, interface.width, interface.height);
   drawBricks();
-  drawBall();
   drawStick();
+  drawBall();
+  ballMovement();
+  impactDetector();
   drawScore();
   drawLives();
-  impactDetector();
-  ballMovement();
 }
 
 var mouseMoveHandler = function (e) {
