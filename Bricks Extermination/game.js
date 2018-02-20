@@ -89,6 +89,28 @@ var drawBricks = function () {
   }
 };
 
+var brickRandomColor = function () {
+  return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+};
+
+var brickNextColor = function () {
+  switch (remain) {
+    case 50:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      break;
+    case 35:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      break;
+    case 15:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      break;
+  }  
+  return;
+};
+
 var acceleration = function (count) {
   if (remain == count) {
     return;
@@ -97,6 +119,7 @@ var acceleration = function (count) {
   speedX = speedX >= 0 ? speedX + speedUp : speedX - speedUp;
   speedY = speedY >= 0 ? speedY + speedUp : speedY - speedUp;
   stickWidth -= 0.4;
+  brickNextColor();
 };
 
 var impactDetector = function () {
