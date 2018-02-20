@@ -13,13 +13,13 @@ var interface = document.getElementById("interface"),
     stickX = (interface.width - stickWidth) / 2,
     stickY = interface.height - stickHeight - 5,
 
-    brickRows = 7,
-    brickColumns = 9,
-    brickWidth = 70,
+    brickRows = 8,
+    brickColumns = 8,
+    brickWidth = 50,
     brickHeight = 20,
     brickPadding = 7,
     brickOffsetTop = 30,
-    brickOffsetLeft = 60,
+    brickOffsetLeft = 30,
     bricks = [],
 
     count = brickRows * brickColumns,
@@ -89,7 +89,7 @@ var drawBricks = function () {
   }
 };
 
-var ballAcceleration = function (count) {
+var acceleration = function (count) {
   if (remain == count) {
     return;
   }
@@ -109,7 +109,7 @@ var impactDetector = function () {
           brick.status = 0;
           score++;
           count--;
-          ballAcceleration(count);
+          acceleration(count);
           if (count == 0) {
             clearInterval(drawInterval);
             alert("GREAT JOB CHAMPION, YOU WON !!!");
@@ -124,14 +124,14 @@ var impactDetector = function () {
 var drawScore = function () {
   context.font = captionText;
   context.fillStyle = captionColor;
-  context.fillText(captionScore + score, 80, 20);
+  context.fillText(captionScore + score, 1, 20);
 };
 
 var drawLives = function () {
   context.font = captionText;
   context.fillStyle = captionColor;
-  context.fillText(captionMain, 300, 20);
-  context.fillText(captionLives + lives, 620, 20);
+  context.fillText(captionMain, 135, 20);
+  context.fillText(captionLives + lives, 400, 20);
 };
 
 var ballMovement = function () {
@@ -184,6 +184,12 @@ var mouseMoveHandler = function (e) {
   if ((relativeX > 0) && (relativeX < interface.width)) {
     if ((relativeX - stickWidth / 2 >= 0) && (relativeX - stickWidth / 2 <= interface.width - stickWidth))
       stickX = relativeX - stickWidth / 2;
+  }
+  else if (relativeX < 0) {
+    stickX = 0;
+  }
+  else if (relativeX > interface.width) {
+    stickX = interface.width - stickWidth;
   }
 };
 
