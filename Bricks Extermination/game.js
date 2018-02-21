@@ -1,45 +1,101 @@
+var configStyle = {
+  captionText: "20px Lucida Console",
+  captionColor: "#fff",
+  captionScore: "score: ",
+  captionMain: "Bricks Extermination",
+  captionLives: "lives: ",
+
+  horizantalCoefficient: 2,
+  ballYcoeficient: 80,
+  ballRadius: 7,
+  speedXY: 5,
+  speedUp: 1,
+  stickHeight: 15,
+  stickWidth: 120,
+  stickMarginBottom: 5,
+  brickRows: 8,
+  brickColumns: 9,
+  brickWidth: 50,
+  brickHeight: 20,
+  brickPadding: 7,
+  brickOffsetTop: 30,
+  brickOffsetLeft: 30,
+
+  ballColor: "#fff",
+  stickColor: "#0000FF",
+  brickColorEven: "#ffbf00",
+  brickColorOdd: "#2aa774",
+  brickRandomColor: function () {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+  }
+};
+
 var interface = document.getElementById("interface"),
-    context = interface.getContext("2d"),
+  context = interface.getContext("2d"),
 
-    ballX = interface.width / 2;
-    ballY = interface.height - 80,
-    ballRadius = 7,
-    speedX = 5,
-    speedY = -5,
-    speedUp = 1,
+  ballX = interface.width / configStyle.horizantalCoefficient;
+ballY = interface.height - configStyle.ballYcoeficient,
+  ballRadius = configStyle.ballRadius,
+  speedX = configStyle.speedXY,
+  speedY = -configStyle.speedXY,
+  speedUp = configStyle.speedUp,
 
-    stickHeight = 15,
-    stickWidth = 120,
-    stickX = (interface.width - stickWidth) / 2,
-    stickY = interface.height - stickHeight - 5,
+  stickHeight = configStyle.stickHeight,
+  stickWidth = configStyle.stickWidth,
+  stickX = (interface.width - stickWidth) / configStyle.horizantalCoefficient,
+  stickY = interface.height - stickHeight - configStyle.stickMarginBottom,
 
-    brickRows = 8,
-    brickColumns = 8,
-    brickWidth = 50,
-    brickHeight = 20,
-    brickPadding = 7,
-    brickOffsetTop = 30,
-    brickOffsetLeft = 30,
-    bricks = [],
+  brickRows = configStyle.brickRows,
+  brickColumns = configStyle.brickColumns,
+  brickWidth = configStyle.brickWidth,
+  brickHeight = configStyle.brickHeight,
+  brickPadding = configStyle.brickPadding,
+  brickOffsetTop = configStyle.brickOffsetTop,
+  brickOffsetLeft = configStyle.brickOffsetLeft,
+  bricks = [],
 
-    count = brickRows * brickColumns,
-    remain = count,
+  count = brickRows * brickColumns,
+  remain = count,
 
-    score = 0,
-    lives = 3,
-    captionText = "20px Lucida Console",
-    captionColor = "#fff",
-    captionScore = "score: ",
-    captionMain = "Bricks Extermination",
-    captionLives = "lives: ",
+  score = 0,
+  lives = 3,
 
-    ballColor = "#fff",
-    stickColor = "#0000FF",
-    brickColorEven = "#ffbf00",
-    brickColorOdd = "#2aa774",
+  statistics = [],
+  playerName = "",
 
-    drawInterval = 0;
+  drawInterval = 0;
 
+var sortStatistics = function (){
+  statistics.sort(function (a, b) {
+    return b.score - a.score;
+  });
+};
+
+var generateFakeStatistics = function () {
+  var players = ["Marko", "Janko", "Petar"];
+  for (var i = 0; i < players.length; i++) {
+    statistics.push({ player: players[i], score: Math.floor(Math.random() * 72) });
+  }
+  showStatistics();
+};
+
+var addNewStatistics = function (playerName, finalScore) {
+  statistics.push({player: playerName, score: finalScore});
+  showStatistics();
+  console.log(statistics);
+};
+
+var showStatistics = function () {
+  sortStatistics();
+  var statisticsDiv = document.getElementById("statistics");
+  if (!statisticsDiv){
+    return;
+  }
+  statisticsDiv.innerHTML = "";
+  for (var i = 0; i < statistics.length; i++){
+    statisticsDiv.innerHTML += "<p>" + statistics[i].player + ": " + statistics[i].score + "</p>";
+  }  
+};
 
 var createBricks = function (brickColumns, brickRows) {
   var brick = [];
@@ -55,7 +111,7 @@ var createBricks = function (brickColumns, brickRows) {
 var drawBall = function () {
   context.beginPath();
   context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-  context.fillStyle = ballColor;
+  context.fillStyle = configStyle.ballColor;
   context.fill();
   context.closePath();
 };
@@ -63,26 +119,22 @@ var drawBall = function () {
 var drawStick = function () {
   context.beginPath();
   context.rect(stickX, stickY, stickWidth, stickHeight);
-  context.fillStyle = stickColor;
+  context.fillStyle = configStyle.stickColor;
   context.fill();
   context.closePath();
 };
 
 var drawScore = function () {
-  context.font = captionText;
-  context.fillStyle = captionColor;
-  context.fillText(captionScore + score, 1, 20);
+  context.font = configStyle.captionText;
+  context.fillStyle = configStyle.captionColor;
+  context.fillText(configStyle.captionScore + score, 1, 20);
 };
 
 var drawLives = function () {
-  context.font = captionText;
-  context.fillStyle = captionColor;
-  context.fillText(captionMain, 135, 20);
-  context.fillText(captionLives + lives, 400, 20);
-};
-
-var brickRandomColor = function () {
-  return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  context.font = configStyle.captionText;
+  context.fillStyle = configStyle.captionColor;
+  context.fillText(configStyle.captionMain, 135, 20);
+  context.fillText(configStyle.captionLives + lives, 400, 20);
 };
 
 var acceleration = function () {
@@ -92,12 +144,13 @@ var acceleration = function () {
 };
 
 var levels = function (count) {
-  if ([15, 35, 50].indexOf(count) === -1) {
+  if ([18, 36, 54].indexOf(count) === -1) {
     return;
   }
-  brickColorEven = brickRandomColor();
-  brickColorOdd = brickRandomColor();
+  configStyle.brickColorEven = configStyle.brickRandomColor();
+  configStyle.brickColorOdd = configStyle.brickRandomColor();
   acceleration();
+  console.log(configStyle.brickColorEven, configStyle.brickColorOdd);
 };
 
 var drawBricks = function () {
@@ -111,9 +164,9 @@ var drawBricks = function () {
         context.beginPath();
         context.rect(brickX, brickY, brickWidth, brickHeight);
         if (column % 2 != 0)
-          context.fillStyle = brickColorEven;
+          context.fillStyle = configStyle.brickColorEven;
         else
-          context.fillStyle = brickColorOdd;
+          context.fillStyle = configStyle.brickColorOdd;
         context.fill();
         context.closePath();
       }
@@ -135,7 +188,11 @@ var impactDetector = function () {
           if (count == 0) {
             clearInterval(drawInterval);
             alert("GREAT JOB CHAMPION, YOU WON !!!");
-            document.location.reload();
+            if (playerName === ""){
+              playerName = prompt("Tell us your name", "myName");
+            }
+            addNewStatistics(playerName, score);
+            //document.location.reload();
           }
         }
       }
@@ -156,7 +213,11 @@ var ballMovement = function () {
       if (!lives) {
         clearInterval(drawInterval);
         alert("Sorry, no more lifes left...\nTry again!");
-        document.location.reload();
+        if (playerName === ""){
+          playerName = prompt("Tell us your name", "myName");
+        }
+        addNewStatistics(playerName, score);
+        //document.location.reload();
       }
       else {
         ballX = interface.width / 2;
@@ -205,5 +266,7 @@ var mouseMoveHandler = function (e) {
 
 createBricks(brickColumns, brickRows);
 document.addEventListener("mousemove", mouseMoveHandler, false);
+generateFakeStatistics();
+console.log(statistics);
 
 drawInterval = setInterval(draw, 20);
