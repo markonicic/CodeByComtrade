@@ -85,39 +85,34 @@ var brickRandomColor = function () {
   return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
 };
 
-var speed = function () {
+var acceleration = function () {
   speedX = speedX >= 0 ? speedX + speedUp : speedX - speedUp;
   speedY = speedY >= 0 ? speedY + speedUp : speedY - speedUp;
   stickWidth -= 15;
 };
 
-var brickNextColor = function () {
-  switch (remain) {
-    case 50:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      speed();
-      break;
-    case 35:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      speed();
-      break;
-    case 15:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      speed();
-      break;
-  }  
-  return;
-};
-
-var acceleration = function (count) {
+var levels = function (count) {
   if (remain == count) {
     return;
   }
   remain = count;
-  brickNextColor();
+  switch (remain) {
+    case 50:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      acceleration();
+      break;
+    case 35:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      acceleration();
+      break;
+    case 15:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      acceleration();
+      break;
+  }
 };
 
 var drawBricks = function () {
@@ -142,16 +137,16 @@ var drawBricks = function () {
 };
 
 var impactDetector = function () {
-  for (var c = 0; c < brickColumns; ++c) {
-    for (var r = 0; r < brickRows; ++r) {
-      var brick = bricks[c][r];
+  for (var column = 0; column < brickColumns; ++column) {
+    for (var row = 0; row < brickRows; ++row) {
+      var brick = bricks[column][row];
       if (brick.status == 1) {
         if ((ballX > brick.x) && (ballX < (brick.x + brickWidth)) && (ballY > brick.y) && (ballY < brick.y + brickHeight)) {
           speedY = -speedY;
           brick.status = 0;
           score++;
           count--;
-          acceleration(count);
+          levels(count);
           if (count == 0) {
             clearInterval(drawInterval);
             alert("GREAT JOB CHAMPION, YOU WON !!!");
@@ -162,6 +157,7 @@ var impactDetector = function () {
     }
   }
 };
+
 var ballMovement = function () {
   if ((ballY + speedY) < ballRadius) {
     speedY = -speedY;
