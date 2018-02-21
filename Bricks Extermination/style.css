@@ -4,11 +4,16 @@ body{
      
     #interface
     {
+        float: left;
         display: block;
         margin: 0 auto;
-        margin-top:10px;
-        background-color:#2A2927;
+        margin-top: 10px;
+        margin-left: 50px;
+        background-color: #2A2927;
         border-radius: 5px;
-        border:15px solid silver;
-        padding-top:25px;
+        border: 15px solid silver;
+        padding-top: 10px;
+    }
+    #statistics {
+        color: white;
     }
