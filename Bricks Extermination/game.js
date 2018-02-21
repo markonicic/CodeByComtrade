@@ -92,27 +92,12 @@ var acceleration = function () {
 };
 
 var levels = function (count) {
-  if (remain == count) {
+  if ([15, 35, 50].indexOf(count) === -1) {
     return;
   }
-  remain = count;
-  switch (remain) {
-    case 50:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      acceleration();
-      break;
-    case 35:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      acceleration();
-      break;
-    case 15:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      acceleration();
-      break;
-  }
+  brickColorEven = brickRandomColor();
+  brickColorOdd = brickRandomColor();
+  acceleration();
 };
 
 var drawBricks = function () {
