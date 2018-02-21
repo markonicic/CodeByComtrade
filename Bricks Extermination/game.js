@@ -6,7 +6,7 @@ var interface = document.getElementById("interface"),
     ballRadius = 7,
     speedX = 5,
     speedY = -5,
-    speedUp = 0.06,
+    speedUp = 1,
 
     stickHeight = 15,
     stickWidth = 120,
@@ -68,6 +68,58 @@ var drawStick = function () {
   context.closePath();
 };
 
+var drawScore = function () {
+  context.font = captionText;
+  context.fillStyle = captionColor;
+  context.fillText(captionScore + score, 1, 20);
+};
+
+var drawLives = function () {
+  context.font = captionText;
+  context.fillStyle = captionColor;
+  context.fillText(captionMain, 135, 20);
+  context.fillText(captionLives + lives, 400, 20);
+};
+
+var brickRandomColor = function () {
+  return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+};
+
+var speed = function () {
+  speedX = speedX >= 0 ? speedX + speedUp : speedX - speedUp;
+  speedY = speedY >= 0 ? speedY + speedUp : speedY - speedUp;
+  stickWidth -= 15;
+};
+
+var brickNextColor = function () {
+  switch (remain) {
+    case 50:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      speed();
+      break;
+    case 35:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      speed();
+      break;
+    case 15:
+      brickColorEven = brickRandomColor();
+      brickColorOdd = brickRandomColor();
+      speed();
+      break;
+  }  
+  return;
+};
+
+var acceleration = function (count) {
+  if (remain == count) {
+    return;
+  }
+  remain = count;
+  brickNextColor();
+};
+
 var drawBricks = function () {
   for (var column = 0; column < brickColumns; ++column) {
     for (var row = 0; row < brickRows; ++row) {
@@ -87,39 +139,6 @@ var drawBricks = function () {
       }
     }
   }
-};
-
-var brickRandomColor = function () {
-  return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-};
-
-var brickNextColor = function () {
-  switch (remain) {
-    case 50:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      break;
-    case 35:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      break;
-    case 15:
-      brickColorEven = brickRandomColor();
-      brickColorOdd = brickRandomColor();
-      break;
-  }  
-  return;
-};
-
-var acceleration = function (count) {
-  if (remain == count) {
-    return;
-  }
-  remain = count;
-  speedX = speedX >= 0 ? speedX + speedUp : speedX - speedUp;
-  speedY = speedY >= 0 ? speedY + speedUp : speedY - speedUp;
-  stickWidth -= 0.4;
-  brickNextColor();
 };
 
 var impactDetector = function () {
@@ -143,20 +162,6 @@ var impactDetector = function () {
     }
   }
 };
-
-var drawScore = function () {
-  context.font = captionText;
-  context.fillStyle = captionColor;
-  context.fillText(captionScore + score, 1, 20);
-};
-
-var drawLives = function () {
-  context.font = captionText;
-  context.fillStyle = captionColor;
-  context.fillText(captionMain, 135, 20);
-  context.fillText(captionLives + lives, 400, 20);
-};
-
 var ballMovement = function () {
   if ((ballY + speedY) < ballRadius) {
     speedY = -speedY;
