@@ -169,6 +169,7 @@ var ballMovement = function () {
   else {
     ballY += speedY;
   }
+
   if ((ballX + speedX < ballRadius) || (ballX + speedX > interface.width - ballRadius)) {
     speedX = -speedX;
   }
