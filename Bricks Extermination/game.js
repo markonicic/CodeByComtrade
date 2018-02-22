@@ -34,7 +34,7 @@ var interface = document.getElementById("interface"),
   context = interface.getContext("2d"),
 
   ballX = interface.width / configStyle.horizantalCoefficient;
-ballY = interface.height - configStyle.ballYcoeficient,
+  ballY = interface.height - configStyle.ballYcoeficient,
   ballRadius = configStyle.ballRadius,
   speedX = configStyle.speedXY,
   speedY = -configStyle.speedXY,
@@ -65,26 +65,30 @@ ballY = interface.height - configStyle.ballYcoeficient,
 
   drawInterval = 0;
 
+// SORTIRA IGRACE PO BROJU SRUSENIH CIGLI
 var sortStatistics = function (){
   statistics.sort(function (a, b) {
     return b.score - a.score;
   });
 };
 
+// GENERISE LAZNU POPUNJENU STATISTIKU
 var generateFakeStatistics = function () {
-  var players = ["Marko", "Janko", "Petar"];
+  var players = ["Stefan", "Janko", "Petar"];
   for (var i = 0; i < players.length; i++) {
     statistics.push({ player: players[i], score: Math.floor(Math.random() * 72) });
   }
   showStatistics();
 };
 
+// DODAJE NOVI OBJEKAT SA IGRACEM I SKOROM U STATISTIKU
 var addNewStatistics = function (playerName, finalScore) {
   statistics.push({player: playerName, score: finalScore});
   showStatistics();
   console.log(statistics);
 };
 
+// VRSI UPIS STATISTIKE U HTML
 var showStatistics = function () {
   sortStatistics();
   var statisticsDiv = document.getElementById("statistics");
@@ -97,6 +101,7 @@ var showStatistics = function () {
   }  
 };
 
+// KREIRA I POPUNJUJE NIZ UKUPNIM BROJEM CIGLI
 var createBricks = function (brickColumns, brickRows) {
   var brick = [];
   for (var column = 0; column < brickColumns; ++column) {
@@ -108,6 +113,7 @@ var createBricks = function (brickColumns, brickRows) {
   bricks = brick;
 };
 
+// ISCRTAVANJE LOPTICE U KANVAS
 var drawBall = function () {
   context.beginPath();
   context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
@@ -116,6 +122,7 @@ var drawBall = function () {
   context.closePath();
 };
 
+// ISCRTAVANJE PALICE U KANVAS
 var drawStick = function () {
   context.beginPath();
   context.rect(stickX, stickY, stickWidth, stickHeight);
@@ -124,12 +131,14 @@ var drawStick = function () {
   context.closePath();
 };
 
+// ISCRTAVANJE SKORA U KANVAS
 var drawScore = function () {
   context.font = configStyle.captionText;
   context.fillStyle = configStyle.captionColor;
   context.fillText(configStyle.captionScore + score, 1, 20);
 };
 
+// ISCRTAVANJE IME IGRICE I BROJA PREOSTALIH ZIVOTA
 var drawLives = function () {
   context.font = configStyle.captionText;
   context.fillStyle = configStyle.captionColor;
@@ -137,12 +146,14 @@ var drawLives = function () {
   context.fillText(configStyle.captionLives + lives, 400, 20);
 };
 
+// UBRZAVANJE LOPTICE I SMANJENJE SIRINE PALICE
 var acceleration = function () {
   speedX = speedX >= 0 ? speedX + speedUp : speedX - speedUp;
   speedY = speedY >= 0 ? speedY + speedUp : speedY - speedUp;
   stickWidth -= 15;
 };
 
+// KREIRA NIVOE I PRIMENJUJE NJEGOVA SVOJSTVA
 var levels = function (count) {
   if ([18, 36, 54].indexOf(count) === -1) {
     return;
@@ -153,6 +164,7 @@ var levels = function (count) {
   console.log(configStyle.brickColorEven, configStyle.brickColorOdd);
 };
 
+// ISCRTAVA I STILIZUJE CIGLE
 var drawBricks = function () {
   for (var column = 0; column < brickColumns; ++column) {
     for (var row = 0; row < brickRows; ++row) {
@@ -174,6 +186,7 @@ var drawBricks = function () {
   }
 };
 
+// ISPITUJE SUDAR LOPTICE I CIGLE
 var impactDetector = function () {
   for (var column = 0; column < brickColumns; ++column) {
     for (var row = 0; row < brickRows; ++row) {
@@ -200,6 +213,7 @@ var impactDetector = function () {
   }
 };
 
+// ODREDJUJE ODNOS PALICE I LOPTICE, KONROLA ZIVOTA I KRETANJE LOPTICE KROZ KANVAS 
 var ballMovement = function () {
   if ((ballY + speedY) < ballRadius) {
     speedY = -speedY;
@@ -239,6 +253,7 @@ var ballMovement = function () {
   }
 };
 
+// ISCRTAVA CANVAS I POKRECE IGRICU
 var draw = function () {
   context.clearRect(0, 0, interface.width, interface.height);
   drawBricks();
@@ -250,6 +265,7 @@ var draw = function () {
   drawLives();
 };
 
+// KONTROLISE KRETANJE PALICE UZ POMOC KRETANJA MISA
 var mouseMoveHandler = function (e) {
   var relativeX = e.clientX - interface.offsetLeft;
   if ((relativeX > 0) && (relativeX < interface.width)) {
