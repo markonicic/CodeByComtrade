@@ -54,3 +54,12 @@ h3 {
 ul {
     text-align: left;
 }
+
+#newGame {
+    background: white;
+    color: black;
+    font-weight: bold;
+    left: 320px;
+    top: 570px;
+    position: absolute;
+}
