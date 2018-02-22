@@ -74,6 +74,7 @@ var sortStatistics = function (){
 
 // GENERISE LAZNO POPUNJENU STATISTIKU, CUVANJE STATISTIKE
 var generateFakeStatistics = function () {
+  //localStorage.clear();
   var storedStatistics = localStorage.getItem("statistics");
   if (storedStatistics) {
     statistics = JSON.parse(storedStatistics);
@@ -91,7 +92,6 @@ var generateFakeStatistics = function () {
 var addNewStatistics = function (playerName, finalScore) {
   statistics.push({player: playerName, score: finalScore});
   showStatistics();
-  //localStorage.clear();
   localStorage.setItem("statistics", JSON.stringify(statistics));
   console.log(statistics);
 };
@@ -291,10 +291,8 @@ document.addEventListener("mousemove", mouseMoveHandler, false);
 generateFakeStatistics();
 console.log(statistics);
 document.getElementById("newGame").addEventListener("click", function (){
-  var newGame = confirm("Start new game?");
-  if (newGame == true){
+  
     document.location.reload();
-  }
 });
 
 drawInterval = setInterval(draw, 20);
