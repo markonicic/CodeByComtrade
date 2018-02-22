@@ -72,11 +72,17 @@ var sortStatistics = function (){
   });
 };
 
-// GENERISE LAZNU POPUNJENU STATISTIKU
+// GENERISE LAZNO POPUNJENU STATISTIKU, CUVANJE STATISTIKE
 var generateFakeStatistics = function () {
-  var players = ["Stefan", "Janko", "Petar"];
-  for (var i = 0; i < players.length; i++) {
-    statistics.push({ player: players[i], score: Math.floor(Math.random() * 72) });
+  var storedStatistics = localStorage.getItem("statistics");
+  if (storedStatistics) {
+    statistics = JSON.parse(storedStatistics);
+  }
+  else {
+    var players = ["Stefan", "Janko", "Petar"];
+    for (var i = 0; i < players.length; i++) {
+      statistics.push({ player: players[i], score: Math.floor(Math.random() * 72) });
+    }
   }
   showStatistics();
 };
@@ -85,6 +91,7 @@ var generateFakeStatistics = function () {
 var addNewStatistics = function (playerName, finalScore) {
   statistics.push({player: playerName, score: finalScore});
   showStatistics();
+  localStorage.setItem("statistics", JSON.stringify(statistics));
   console.log(statistics);
 };
 
@@ -95,9 +102,9 @@ var showStatistics = function () {
   if (!statisticsDiv){
     return;
   }
-  statisticsDiv.innerHTML = "";
+  statisticsDiv.innerHTML = "<h4>STATISTICS<h4>" + "<hr>";
   for (var i = 0; i < statistics.length; i++){
-    statisticsDiv.innerHTML += "<p>" + statistics[i].player + ": " + statistics[i].score + "</p>";
+    statisticsDiv.innerHTML +=  "<p>" + statistics[i].player + ": " + statistics[i].score + "</p>";
   }  
 };
 
@@ -135,15 +142,15 @@ var drawStick = function () {
 var drawScore = function () {
   context.font = configStyle.captionText;
   context.fillStyle = configStyle.captionColor;
-  context.fillText(configStyle.captionScore + score, 1, 20);
+  context.fillText(configStyle.captionScore + score, 10, 20);
 };
 
 // ISCRTAVANJE IME IGRICE I BROJA PREOSTALIH ZIVOTA
 var drawLives = function () {
   context.font = configStyle.captionText;
   context.fillStyle = configStyle.captionColor;
-  context.fillText(configStyle.captionMain, 135, 20);
-  context.fillText(configStyle.captionLives + lives, 400, 20);
+  context.fillText(configStyle.captionMain, 160, 20);
+  context.fillText(configStyle.captionLives + lives, 460, 20);
 };
 
 // UBRZAVANJE LOPTICE I SMANJENJE SIRINE PALICE
