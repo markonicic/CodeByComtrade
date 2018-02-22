@@ -1,19 +1,52 @@
-body{
+body {
     background-color:black;
     }
      
-    #interface
-    {
-        float: left;
-        display: block;
-        margin: 0 auto;
-        margin-top: 10px;
-        margin-left: 50px;
-        background-color: #2A2927;
-        border-radius: 5px;
-        border: 15px solid silver;
-        padding-top: 10px;
-    }
-    #statistics {
-        color: white;
-    }
+#interface {
+    display: block;
+    float: left;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-left: 50px;
+    background-color: #2A2927;
+    border-radius: 5px;
+    border: 15px solid silver;
+    padding-top: 10px;
+}
+
+#statistics {
+    display: block;
+    float: left;
+    font-weight: bold;
+    margin-top: 30px;
+    padding: 10px;
+    background: white;
+    width: 400px;
+    margin-left: 50px;
+    color: black;
+}
+
+h4 {
+    color: blue;
+    font-weight: bolder;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#instructions {
+    display: block;
+    float: left;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 10px;
+    background: white;
+    width: 400px;
+    margin-left: 50px;
+    color: black;   
+}
+
+h3 {
+    color: red;
+    font-weight: bold;
+    font-style: italic;
+}
