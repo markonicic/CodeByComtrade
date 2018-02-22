@@ -91,6 +91,7 @@ var generateFakeStatistics = function () {
 var addNewStatistics = function (playerName, finalScore) {
   statistics.push({player: playerName, score: finalScore});
   showStatistics();
+  //localStorage.clear();
   localStorage.setItem("statistics", JSON.stringify(statistics));
   console.log(statistics);
 };
@@ -212,7 +213,6 @@ var impactDetector = function () {
               playerName = prompt("Tell us your name", "myName");
             }
             addNewStatistics(playerName, score);
-            //document.location.reload();
           }
         }
       }
@@ -238,7 +238,6 @@ var ballMovement = function () {
           playerName = prompt("Tell us your name", "myName");
         }
         addNewStatistics(playerName, score);
-        //document.location.reload();
       }
       else {
         ballX = interface.width / 2;
@@ -291,5 +290,11 @@ createBricks(brickColumns, brickRows);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 generateFakeStatistics();
 console.log(statistics);
+document.getElementById("newGame").addEventListener("click", function (){
+  var newGame = confirm("Start new game?");
+  if (newGame == true){
+    document.location.reload();
+  }
+});
 
 drawInterval = setInterval(draw, 20);
