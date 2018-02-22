@@ -290,8 +290,7 @@ createBricks(brickColumns, brickRows);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 generateFakeStatistics();
 console.log(statistics);
-document.getElementById("newGame").addEventListener("click", function (){
-  
+document.getElementById("newGame").addEventListener("click", function (){  
     document.location.reload();
 });
 
