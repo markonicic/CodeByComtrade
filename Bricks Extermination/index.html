@@ -12,7 +12,7 @@
 
 <body>
     <canvas id="interface" width="570" height="500"></canvas>
-    
+
     <audio src="./sounds/explosion.wav" type="audio/wav" id="explosion"></audio>
     <audio src="./sounds/touch.wav" type="audio/wav" id="touch"></audio>
     <audio src="./sounds/stick.wav" type="audio/wav" id="stick"></audio>
@@ -44,6 +44,11 @@
             </strong>
         </p>
     </div>
+    <script defer>
+        window.onload = function () {
+            startGame();
+        }
+    </script>
 </body>
 
 </html>

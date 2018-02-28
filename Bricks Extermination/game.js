@@ -351,12 +351,14 @@ var mouseMoveHandler = function (e) {
   }
 };
 
-createBricks(brickColumns, brickRows);
-document.addEventListener("mousemove", mouseMoveHandler, false);
-generateFakeStatistics();
-console.log(statistics);
+var startGame = function() {
+	createBricks(brickColumns, brickRows);
+	document.addEventListener("mousemove", mouseMoveHandler, false);
+	generateFakeStatistics();
+	console.log(statistics);
+	drawInterval = setInterval(draw, 20);
+}
+
 document.getElementById("newGame").addEventListener("click", function () {
   document.location.reload();
 });
-
-drawInterval = setInterval(draw, 20);
