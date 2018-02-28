@@ -1,31 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bricks Extermination</title>
-    <link rel="stylesheet prefetch" type="text/css" href="/style.css">
-    <script src="/game.js" defer></script>
+    <link rel="stylesheet prefetch" type="text/css" href="./style.css">
+    <script src="./game.js" defer></script>
 </head>
+
 <body>
     <canvas id="interface" width="570" height="500"></canvas>
+    
+    <audio src="./sounds/explosion.wav" type="audio/wav" id="explosion"></audio>
+    <audio src="./sounds/touch.wav" type="audio/wav" id="touch"></audio>
+    <audio src="./sounds/stick.wav" type="audio/wav" id="stick"></audio>
+
     <div id="statistics"></div>
+
     <button id="newGame">New Game</button>
+
     <div id="instructions">
         <h3>
             Upustvo za igru
-        </h3><hr>
+        </h3>
+        <hr>
         <p>
-            <strong>Bricks Extermination</strong> je igrica u kojoj se lopticom razbijaju cigle i skupljaju bodovi. <strong>Bricks Extermination</strong> igrica se se sastoji od loptice, cigli, palice i kutije u kojoj se radnja igrice desava.
+            <strong>Bricks Extermination</strong> je igrica u kojoj se lopticom razbijaju cigle i skupljaju bodovi.
+            <strong>Bricks Extermination</strong> igrica se se sastoji od loptice, cigli, palice i kutije u kojoj se radnja igrice
+            desava.
             <ul value="circle">
                 <li>3 zivota</li>
                 <li>72 cigli</li>
                 <li>Neograniceno vreme</li>
             </ul>
-            Loptica se odbija o zidove kutije i krece se kroz nju. Zadatak je ne dozvoliti loptici da udari u donji zid kutije, vec odbacivati lopticu sa dna uz pomoc palice koju kontrolisete uz pomoc misa.
-            <strong><em>Srecno!<hr></em></strong>
+            Loptica se odbija o zidove kutije i krece se kroz nju. Zadatak je ne dozvoliti loptici da udari u donji zid kutije, vec odbacivati
+            lopticu sa dna uz pomoc palice koju kontrolisete uz pomoc misa.
+            <strong>
+                <em>Srecno!
+                    <hr>
+                </em>
+            </strong>
         </p>
     </div>
 </body>
+
 </html>
