@@ -25,16 +25,28 @@ var configStyle = {
   stickColor: "#0000FF",
   brickColorEven: "#ffbf00",
   brickColorOdd: "#2aa774",
-  brickRandomColor: function () {
-    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+
+  brickRandomColor: function (coeficient) {
+    var multi = 0xFFFFFF;
+    if (coeficient != 0) {
+      multi = 0x999999;
+    }
+    var color = (Math.random() * multi << 0).toString(16);
+    var finalColor = color + color;
+    return '#' + finalColor.substr(0, 6);
+
   }
 };
 
 var interface = document.getElementById("interface"),
   context = interface.getContext("2d"),
 
+  stickSound = document.getElementById("stick"),
+  brickSound = document.getElementById("touch"),
+  explosionSound = document.getElementById("explosion"),
+
   ballX = interface.width / configStyle.horizantalCoefficient;
-  ballY = interface.height - configStyle.ballYcoeficient,
+ballY = interface.height - configStyle.ballYcoeficient,
   ballRadius = configStyle.ballRadius,
   speedX = configStyle.speedXY,
   speedY = -configStyle.speedXY,
@@ -66,7 +78,7 @@ var interface = document.getElementById("interface"),
   drawInterval = 0;
 
 // SORTIRA IGRACE PO BROJU SRUSENIH CIGLI
-var sortStatistics = function (){
+var sortStatistics = function () {
   statistics.sort(function (a, b) {
     return b.score - a.score;
   });
@@ -90,7 +102,7 @@ var generateFakeStatistics = function () {
 
 // DODAJE NOVI OBJEKAT SA IGRACEM I SKOROM U STATISTIKU
 var addNewStatistics = function (playerName, finalScore) {
-  statistics.push({player: playerName, score: finalScore});
+  statistics.push({ player: playerName, score: finalScore });
   showStatistics();
   localStorage.setItem("statistics", JSON.stringify(statistics));
   console.log(statistics);
@@ -100,13 +112,13 @@ var addNewStatistics = function (playerName, finalScore) {
 var showStatistics = function () {
   sortStatistics();
   var statisticsDiv = document.getElementById("statistics");
-  if (!statisticsDiv){
+  if (!statisticsDiv) {
     return;
   }
   statisticsDiv.innerHTML = "<h4>STATISTICS<h4>" + "<hr>";
-  for (var i = 0; i < statistics.length; i++){
-    statisticsDiv.innerHTML +=  "<p>" + statistics[i].player + ": " + statistics[i].score + "</p>";
-  }  
+  for (var i = 0; i < statistics.length; i++) {
+    statisticsDiv.innerHTML += "<p>" + statistics[i].player + ": " + statistics[i].score + "</p>";
+  }
 };
 
 // KREIRA I POPUNJUJE NIZ UKUPNIM BROJEM CIGLI
@@ -115,7 +127,12 @@ var createBricks = function (brickColumns, brickRows) {
   for (var column = 0; column < brickColumns; ++column) {
     brick[column] = [];
     for (var row = 0; row < brickRows; ++row) {
-      brick[column][row] = { x: 0, y: 0, status: 1 };
+      var rnd = Math.round(Math.random() * 10);
+      var explode = false;
+      if (rnd > 7) {
+        var explode = true;
+      }
+      brick[column][row] = { x: 0, y: 0, status: 1, explode: explode };
     }
   }
   bricks = brick;
@@ -166,8 +183,8 @@ var levels = function (count) {
   if ([18, 36, 54].indexOf(count) === -1) {
     return;
   }
-  configStyle.brickColorEven = configStyle.brickRandomColor();
-  configStyle.brickColorOdd = configStyle.brickRandomColor();
+  configStyle.brickColorEven = configStyle.brickRandomColor(0);
+  configStyle.brickColorOdd = configStyle.brickRandomColor(1);
   acceleration();
   console.log(configStyle.brickColorEven, configStyle.brickColorOdd);
 };
@@ -199,22 +216,54 @@ var impactDetector = function () {
   for (var column = 0; column < brickColumns; ++column) {
     for (var row = 0; row < brickRows; ++row) {
       var brick = bricks[column][row];
-      if (brick.status == 1) {
-        if ((ballX > brick.x) && (ballX < (brick.x + brickWidth)) && (ballY > brick.y) && (ballY < brick.y + brickHeight)) {
-          speedY = -speedY;
-          brick.status = 0;
+      if (brick.status != 1) {
+        continue;
+      }
+
+      if (!((ballX > brick.x) && (ballX < (brick.x + brickWidth)) && (ballY > brick.y) && (ballY < brick.y + brickHeight))) {
+        continue;
+      }
+
+      brick.status = 0;
+      brickSound.play();
+      score++;
+      count--;
+      levels(count);
+      speedY = -speedY;
+
+      if (brick.explode) {
+        explosionSound.play();
+        var explodeBricks = [
+          column > 0 ? bricks[column - 1][row] : null,
+          column < brickColumns - 1 ? bricks[column + 1][row] : null,
+          row > 0 ? bricks[column][row - 1] : null,
+          row < brickRows - 1 ? bricks[column][row + 1] : null
+        ];
+        for (var i = 0; i < explodeBricks.length; i++) {
+          if (!explodeBricks[i]) {
+            continue;
+          }
+
+          if (explodeBricks[i].status == 0) {
+            continue;
+          }
+          
+          explodeBricks[i].status = 0;
           score++;
           count--;
           levels(count);
-          if (count == 0) {
-            clearInterval(drawInterval);
-            alert("GREAT JOB CHAMPION, YOU WON !!!");
-            if (playerName === ""){
-              playerName = prompt("Tell us your name", "myName");
-            }
-            addNewStatistics(playerName, score);
-          }
         }
+      }
+
+      if (count == 0) {
+        setTimeout(function () {
+          clearInterval(drawInterval);
+          alert("GREAT JOB CHAMPION, YOU WON !!!");
+          if (playerName === "") {
+            playerName = prompt("Tell us your name", "myName");
+          }
+        }, 150);
+        addNewStatistics(playerName, score);
       }
     }
   }
@@ -227,14 +276,30 @@ var ballMovement = function () {
   }
   else if ((ballY + speedY + 15) > (interface.height - ballRadius)) {
     if ((ballX >= stickX) && (ballX <= stickX + stickWidth)) {
+      if (ballX <= stickX + stickWidth / 5) {
+        speedX = -5;
+      }
+      else if ((ballX > stickX + stickWidth / 5) && (ballX < stickX + stickWidth / 5 * 2)) {
+        speedX = -2.5;
+      }
+      else if ((ballX > stickX + stickWidth / 5 * 2) && (ballX < stickX + stickWidth / 5 * 3)) {
+        speedX = 0.5;
+      }
+      else if ((ballX > stickX + stickWidth / 5 * 3) && ((ballX < stickX + stickWidth / 5 * 4))) {
+        speedX = 2.5;
+      }
+      else {
+        speedX = 5;
+      }
       speedY = -speedY;
+      stickSound.play();
     }
     else {
       lives--;
       if (!lives) {
         clearInterval(drawInterval);
         alert("Sorry, no more lifes left...\nTry again!");
-        if (playerName === ""){
+        if (playerName === "") {
           playerName = prompt("Tell us your name", "myName");
         }
         addNewStatistics(playerName, score);
@@ -290,8 +355,8 @@ createBricks(brickColumns, brickRows);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 generateFakeStatistics();
 console.log(statistics);
-document.getElementById("newGame").addEventListener("click", function (){  
-    document.location.reload();
+document.getElementById("newGame").addEventListener("click", function () {
+  document.location.reload();
 });
 
 drawInterval = setInterval(draw, 20);
